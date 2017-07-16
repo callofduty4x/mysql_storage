@@ -1,8 +1,18 @@
 # MySQL Storage
 
-## Introduction
-
 MySQL Storage is a set of .gsx (Game Script Extended) used to simplify interaction with MySQL database and offers 3 types of different data storages: `player`, `map` and `global`.
+
+## Table of contents
+
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [How to use](#how-to-use)
+4. [Script function description](#script-function-description)
+    1. [Player storage](#player-storage)
+    2. [Map storage](#map-storage)
+    3. [Global storage](#global-storage)
+5. [Storage description](#storage-description)
+    1. [Result database look](#result-database-look)
 
 ## Requirements
 
@@ -38,11 +48,11 @@ Open your script and add to the very beginning of file at least one of lines:
 
 Thats it. From now you can use each functions located in included files. These files designed not to include actual code but wraps real function call. The purpose of file called `_mysql_storage_util.gsc` is to keep all the logic inside. This file should not be included (`#include`) in your scripts unless you want to use your own storage.
 
-### Script function description
+## Script function description
 
 In the examples below `<Data>` is a variable of *almost* any type.
 
-#### Player storage
+### Player storage
 
 Player storage used to store player specific data: *kills*, *deaths*, *assists*, *scores*, *longest streak* etc.
 
@@ -52,7 +62,7 @@ Player storage used to store player specific data: *kills*, *deaths*, *assists*,
 
 * `<player> DeleteFromPlayerStorage(<string sKey>)` - deletes data for specified player by key `sKey`;
 
-#### Map storage
+### Map storage
 
 Map storage used to store global for each map data: *mvp*, *result of last game* etc.
 
@@ -62,7 +72,7 @@ Map storage used to store global for each map data: *mvp*, *result of last game*
 
 * `DeleteFromMapStorage(<string sKey>)` - deletes data for current map by key `sKey`;
 
-#### Global storage
+### Global storage
 
 Global storage used to store global data: *best player ever*, *admin actions*, *global models coordinates* etc. You can ignore parameter `sParam` or use it to combine keys into *Groups*. If you will not specify parameter `sParam`, VM will consider its as `undefined` and script will convert it to empty string so it can be used in MySQL table.
 
@@ -72,7 +82,7 @@ Global storage used to store global data: *best player ever*, *admin actions*, *
 
 * `DeleteFromGlobalStorage(<string sKey>, [string sParam])` - deletes data DB by key `sKey` and optional parameter `sParam`.
 
-### Storage description
+## Storage description
 
 By *storage* I mean table in MySQL database. Script will create tables (storages) inside specified in config database. Table as complex primary key (PK): `datakey;param`. Each table has next format:
 
@@ -84,30 +94,30 @@ By *storage* I mean table in MySQL database. Script will create tables (storages
 
 Database can contain as much storages as you want, but I prefer stick to these 3 types: global (`storage_global`), map (`storage_map`), player (`storage_player`). You can create your own storage for your own purpose but you will have to use `_util` functions to maintenance this one.
 
-#### Result database look
+### Result database look
 
-* Database: `mysql_storage`
+* `mysql_storage`: database
 
-    * Player storage: `storage_player`
+    * `storage_player`: player storage
 
-        * Key: `datakey`
+        * `datakey`: key
 
-        * Parameter: `param`
+        * `param`: parameter
 
-        * Serialized data: `data`
+        * `data`: serialized data
 
-    * Map storage: `storage_map`
+    * `storage_map`: map storage
 
-        * Key: `datakey`
+        * `datakey`: key
 
-        * Parameter: `param`
+        * `param`: parameter
 
-        * Serialized data: `data`
+        * `data`: serialized data
 
-    * Global storage: `storage_global`
+    * `storage_global`: global storage
 
-        * Key: `datakey`
+        * `datakey`: key
 
-        * Parameter: `param`
+        * `param`: parameter
 
-        * Serialized data: `data`
+        * `data`: serialized data
