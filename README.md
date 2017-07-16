@@ -16,23 +16,23 @@ MySQL Storage is a set of .gsx (Game Script Extended) used to simplify interacti
 
 ## Requirements
 
-* CoD4X server v1.8.
+* [CoD4X server v1.8](https://github.com/callofduty4x/CoD4x_Server);
 
-* CoD4X MySQL plugin.
+* [CoD4X MySQL plugin](https://github.com/callofduty4x/mysql);
 
-* MySQL database compatible with CoD4X MySQL plugin.
+* [MySQL database](https://dev.mysql.com/downloads/mysql/) compatible with CoD4X MySQL plugin.
 
 ## Installation
 
-* Before storage installation you have to install MySQL server, setup user and create database for this user. There are a lot tutorials availabe on official site/in Google.
+* Before storage installation you have to install MySQL server, setup user and create database for this user. There are a lot tutorials availabe on official site/in Google;
 
-* Download files and config.
+* Download files and config;
 
-* Place scripts in your mods/main_shared directory according specified path.
+* Place scripts in your mods/main_shared directory according specified path;
 
-* Place config next to mod.ff/main directory.
+* Place config next to mod.ff/main directory;
 
-* Change connection details in config file.
+* Change connection details in config file;
 
 * Add to server command line: `+exec mysqlStorage.cfg`.
 
@@ -60,7 +60,7 @@ Player storage used to store player specific data: *kills*, *deaths*, *assists*,
 
 * `<player> GetFromPlayerStorage(<string sKey>)` - retrieves data from DB for specified player by key `sKey`;
 
-* `<player> DeleteFromPlayerStorage(<string sKey>)` - deletes data for specified player by key `sKey`;
+* `<player> DeleteFromPlayerStorage(<string sKey>)` - deletes data for specified player by key `sKey`.
 
 ### Map storage
 
@@ -70,7 +70,7 @@ Map storage used to store global for each map data: *mvp*, *result of last game*
 
 * `GetFromMapStorage(<string sKey>)` - retrieves data from DB for current map by key `sKey`;
 
-* `DeleteFromMapStorage(<string sKey>)` - deletes data for current map by key `sKey`;
+* `DeleteFromMapStorage(<string sKey>)` - deletes data for current map by key `sKey`.
 
 ### Global storage
 
@@ -96,28 +96,28 @@ Database can contain as much storages as you want, but I prefer stick to these 3
 
 ### Result database look
 
-* `mysql_storage`: database
+* `mysql_storage`: database;
 
-    * `storage_player`: player storage
+    * `storage_player`: player storage;
 
-        * `datakey`: key
+        * `datakey`: key;
 
-        * `param`: parameter
+        * `param`: parameter;
 
-        * `data`: serialized data
+        * `data`: serialized data;
 
-    * `storage_map`: map storage
+    * `storage_map`: map storage;
 
-        * `datakey`: key
+        * `datakey`: key;
 
-        * `param`: parameter
+        * `param`: parameter;
 
-        * `data`: serialized data
+        * `data`: serialized data;
 
-    * `storage_global`: global storage
+    * `storage_global`: global storage;
 
-        * `datakey`: key
+        * `datakey`: key;
 
-        * `param`: parameter
+        * `param`: parameter;
 
-        * `data`: serialized data
+        * `data`: serialized data.
