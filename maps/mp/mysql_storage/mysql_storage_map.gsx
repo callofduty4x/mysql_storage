@@ -11,3 +11,8 @@ GetFromMapStorage(sKey)
 {
     return _GetFromStorage("storage_map", sKey, getDvar("mapname"));
 }
+
+DeleteFromMapStorage(sKey)
+{
+    _DeleteFromStorage("storage_map", sKey, getDvar("mapname"));
+}

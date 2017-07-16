@@ -24,7 +24,7 @@ _InitConnection()
 // Initializes storage if not exist.
 _InitStorage(sStorageName)
 {
-    query = "CREATE TABLE IF NOT EXISTS " + sStorageName + " (datakey VARCHAR(64), param VARCHAR(64), data VARCHAR(256), PRIMARY KEY(datakey, param));";
+    query = "CREATE TABLE IF NOT EXISTS " + sStorageName + " (datakey VARCHAR(64), param VARCHAR(64), data VARCHAR("+ getDvarInt("mysqlStorage_dataSize") +"), PRIMARY KEY(datakey, param));";
     _MysqlStorageDebug(query);
     mysql_query(level.mysqlStorage, query);
     level.mysqlStorageInitialized[sStorageName] = true;
@@ -33,7 +33,7 @@ _InitStorage(sStorageName)
 _MysqlStorageDebug(sText)
 {
     if (getDvarInt("mysqlStorage_debug"))
-        logprint("MySQL Storage Debug: " + sText + "\n");
+        logprint("::MySQL Storage debug:: " + sText + "\n");
 }
 
 _PrepareStorage(sStorageName)
@@ -111,10 +111,12 @@ _SerializeVector(vData)
 _SerializeArray(aData)
 {
     sArray = "";
-    iSize = aData.size;
+    aKeys = getArrayKeys(aData);
+    iSize = aKeys.size;
     for (i = 0; i < iSize; i++)
     {
-        sArray += _SerializeData(aData[i]);
+        sElement = _SerializeData(aKeys[i]) + ";" + _SerializeData(aData[aKeys[i]]);
+        sArray += _SerializeString(sElement);
         if (i != iSize - 1)
             sArray += ";";
     }
@@ -163,16 +165,23 @@ _SerializeData(Data)
 }
 
 // Deserialize string Data as array.
-// sData format:                [base64EncodedData]
-// base64EncodedData format:    base64EncodedData;...;base64EncodedData
+// sData format:                    [encodedData]
+// decoded encodedData format:      encodedPair;...;encodedPair
+// decoded encodedPair format:      encodedKey;encodedValue;
 _DeserializeArray(sData)
 {
     result = [];
-    encoded = getSubStr(sData, 1, sData.size - 1);
-    decoded = base64Decode(encoded);
-    elements = strTok(decoded, ";");
-    for (i = 0; i < elements.size; i++)
-        result[i] = _DeserializeData(elements[i]); // Recursive as we don't know its type.
+    encodedData = getSubStr(sData, 1, sData.size - 1);
+    decodedData = base64Decode(encodedData);
+    encodedPairs = strTok(decodedData, ";");
+    for (i = 0; i < encodedPairs.size; i++)
+    {
+        decodedPair = _DeserializeString(encodedPairs[i]);
+        tokens = strTok(decodedPair, ";");
+        key = _DeserializeData(tokens[0]);
+        value = _DeserializeData(tokens[1]);
+        result[key] = value;
+    }
     return result;
 }
 
@@ -254,4 +263,16 @@ _DeserializeData(sData)
 
     // Any other data
     return _DeserializeInt(sData);
+}
+
+// Deletes data from specified storage.
+_DeleteFromStorage(sStorageName, sKey, sParam)
+{
+    if (!isDefined(sParam))
+        sParam = "";
+
+    _PrepareStorage(sStorageName);
+    query = "DELETE FROM " + sStorageName + " WHERE datakey='" + sKey + "' and param='" + sParam + "';";
+    _MysqlStorageDebug(query);
+    mysql_query(level.mysqlStorage, query);
 }

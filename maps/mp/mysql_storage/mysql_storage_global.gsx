@@ -11,3 +11,9 @@ GetFromGlobalStorage(sKey, sParam)
 {
     return _GetFromStorage("storage_global", sKey, sParam);
 }
+
+// sParam is optional.
+DeleteFromGlobalStorage(sKey, sParam)
+{
+    _DeleteFromStorage("storage_global", sKey, sParam);
+}

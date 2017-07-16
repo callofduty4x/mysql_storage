@@ -13,3 +13,9 @@ GetFromPlayerStorage(sKey)
 {
     return _GetFromStorage("storage_player", sKey, self getGuid());
 }
+
+// Call this on player entity.
+DeleteFromPlayerStorage(sKey)
+{
+    _DeleteFromStorage("storage_player", sKey, self getGuid());
+}
